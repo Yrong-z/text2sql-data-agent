@@ -1,0 +1,56 @@
+# Python and local runtimes
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# IDE and local agents
+.idea/
+.vscode/
+.claude/
+.agents/
+.codex/
+.cursor/
+
+# Logs, temporary output and local persistence
+logs/
+*.log
+tmp/
+output/
+dist/
+build/
+/data/
+/volumes/
+/storage/
+/qdrant_storage/
+/milvus_data/
+/mysql_data/
+/es_data/
+
+# Environment and local configuration
+.env
+.env.*
+!.env.example
+conf/app_config.local.yaml
+
+# Model weights and local model caches
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.onnx
+/models/
+/.cache/
+/.huggingface/
+docker/embedding/**/pytorch_model.bin
+docker/embedding/**/model.safetensors
+
+# OS files
+.DS_Store
+Thumbs.db

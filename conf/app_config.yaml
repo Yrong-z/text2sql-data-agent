@@ -1,0 +1,44 @@
+logging:
+  file:
+    enable: true
+    level: INFO
+    path: ${oc.env:LOG_PATH,logs}
+    rotation: ${oc.env:LOG_ROTATION,10 MB}
+    retention: ${oc.env:LOG_RETENTION,7 days}
+  console:
+    enable: true
+    level: ${oc.env:LOG_LEVEL,INFO}
+
+db_meta:
+  host: ${oc.env:MYSQL_HOST,localhost}
+  port: ${oc.env:MYSQL_PORT,3306}
+  user: ${oc.env:MYSQL_USER,app}
+  password: ${oc.env:MYSQL_PASSWORD,change-me-local}
+  database: ${oc.env:MYSQL_META_DATABASE,meta}
+
+db_dw:
+  host: ${oc.env:MYSQL_HOST,localhost}
+  port: ${oc.env:MYSQL_PORT,3306}
+  user: ${oc.env:MYSQL_USER,app}
+  password: ${oc.env:MYSQL_PASSWORD,change-me-local}
+  database: ${oc.env:MYSQL_DW_DATABASE,dw}
+
+qdrant:
+  host: ${oc.env:QDRANT_HOST,localhost}
+  port: ${oc.env:QDRANT_PORT,6333}
+  embedding_size: 1024
+
+embedding:
+  host: ${oc.env:EMBEDDING_HOST,localhost}
+  port: ${oc.env:EMBEDDING_PORT,8081}
+  model: ${oc.env:EMBEDDING_MODEL_ID,BAAI/bge-large-zh-v1.5}
+
+es:
+  host: ${oc.env:ELASTICSEARCH_HOST,localhost}
+  port: ${oc.env:ELASTICSEARCH_PORT,9200}
+  index_name: ${oc.env:ES_INDEX_NAME,data_agent}
+
+llm:
+  model_name: ${oc.env:LLM_MODEL,deepseek-v4-flash}
+  api_key: ${oc.env:LLM_API_KEY,""}
+  base_url: ${oc.env:LLM_BASE_URL,https://api.deepseek.com}
