@@ -24,10 +24,9 @@ and an OpenAI-compatible LLM.
 
 1. Clone the repository and copy `.env.example` to `.env`.
 2. Install the Python dependencies with `uv sync --no-install-project` (the checked-in `uv.lock` pins the environment).
-3. Download and validate `BAAI/bge-large-zh-v1.5` outside Git with `python scripts/download_embedding_model.py` (the Compose TEI image is pinned to `cpu-1.8.2`).
-4. Start the local services with `docker compose -f docker/docker-compose.yaml up -d`.
+3. Start the local services with `docker compose -f docker/docker-compose.yaml up -d`. TEI downloads `BAAI/bge-large-zh-v1.5` from Hugging Face on first startup and caches it in the Docker `embedding-cache` volume.
 5. The MySQL container automatically creates the `meta` and `dw` databases and loads the fictional demo schema and rows from `docker/mysql/`.
-6. After the services are healthy, initialize the Qdrant and Elasticsearch demo indexes:
+6. After TEI and the other services are healthy, initialize the Qdrant and Elasticsearch demo indexes:
    `python scripts/init_demo_retrieval.py`
 7. Run the available tests or call `POST /api/query` after the services are healthy.
 
