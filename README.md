@@ -23,8 +23,8 @@ and an OpenAI-compatible LLM.
 ## Local setup
 
 1. Clone the repository and copy `.env.example` to `.env`.
-2. Install the Python dependencies with `python -m pip install -e .` (or use the checked-in `uv.lock`).
-3. Follow [docs/EMBEDDING.md](docs/EMBEDDING.md) to download `BAAI/bge-large-zh-v1.5` outside Git.
+2. Install the Python dependencies with `uv sync --no-install-project` (the checked-in `uv.lock` pins the environment).
+3. Download `BAAI/bge-large-zh-v1.5` outside Git with `python scripts/download_embedding_model.py`.
 4. Start the local services with `docker compose -f docker/docker-compose.yaml up -d`.
 5. The MySQL container automatically creates the `meta` and `dw` databases and loads the fictional demo schema and rows from `docker/mysql/`.
 6. After the services are healthy, initialize the Qdrant and Elasticsearch demo indexes:
