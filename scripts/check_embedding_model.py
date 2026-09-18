@@ -1,4 +1,4 @@
-"""Fail early with a clear message when the TEI model directory is empty."""
+"""Fail early unless the TEI model directory contains real inference weights."""
 from __future__ import annotations
 
 import os
@@ -18,8 +18,9 @@ def main() -> int:
     required = [MODEL_DIR / "config.json", MODEL_DIR / "tokenizer.json"]
     weights = [MODEL_DIR / "pytorch_model.bin", MODEL_DIR / "model.safetensors"]
     missing = [str(p) for p in required if not p.is_file()]
-    if not any(p.is_file() for p in weights):
-        missing.append(f"{MODEL_DIR}/pytorch_model.bin or model.safetensors")
+    valid_weights = [p for p in weights if p.is_file() and p.stat().st_size >= 100 * 1024 * 1024]
+    if not valid_weights:
+        missing.append(f"{MODEL_DIR}/pytorch_model.bin or model.safetensors (>=100 MiB)")
     if missing:
         print("Embedding model is not ready.", file=sys.stderr)
         print(f"Expected BAAI/bge-large-zh-v1.5 under: {MODEL_DIR}", file=sys.stderr)

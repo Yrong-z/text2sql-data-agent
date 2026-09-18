@@ -51,7 +51,7 @@ services:
       - qdrant_data:/qdrant/storage
 
   embedding:
-    image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.8
+    image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.8.2
     container_name: embedding
     restart: unless-stopped
     ports:
