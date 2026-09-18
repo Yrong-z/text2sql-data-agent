@@ -5,7 +5,7 @@ from langchain_core.prompts import PromptTemplate
 from langgraph.runtime import Runtime
 
 from app.agent.context import DataAgentContext
-from app.agent.llm import llm
+from app.agent.llm import get_llm_client
 from app.agent.state import DataAgentState
 from app.core.log import logger
 from app.prompt.prompt_loader import load_prompt
@@ -27,7 +27,7 @@ async def filter_table(state: DataAgentState, runtime: Runtime[DataAgentContext]
         )
 
         output_parser = JsonOutputParser()
-        chain = prompt | llm | output_parser
+        chain = prompt | get_llm_client() | output_parser
 
         result = await chain.ainvoke(
             {
