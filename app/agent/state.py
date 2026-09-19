@@ -57,3 +57,4 @@ class DataAgentState(TypedDict, total=False):
 
     sql: str
     error: str | None
+    validation_attempts: int

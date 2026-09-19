@@ -30,6 +30,8 @@ def route_after_validate_sql(state: DataAgentState) -> str:
     """
     if state.get("error") is None:
         return "run_sql"
+    if state.get("validation_attempts", 0) >= 1:
+        return "error_end"
     return "correct_sql"
 
 
@@ -99,13 +101,14 @@ graph_builder.add_conditional_edges(
     {
         "run_sql": "run_sql",
         "correct_sql": "correct_sql",
+        "error_end": END,
     },
 )
 
 # 修正后再次执行
 # 注意：课程代码是 correct_sql -> execute_sql
 # 你当前阶段为了避免死循环，先保持这个版本
-graph_builder.add_edge("correct_sql", "run_sql")
+graph_builder.add_edge("correct_sql", "validate_sql")
 
 # 执行完结束
 graph_builder.add_edge("run_sql", END)

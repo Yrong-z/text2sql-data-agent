@@ -1,5 +1,8 @@
+import asyncio
+
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
+from app.agent.nodes.sql_utils import validate_read_only_select
 
 
 class DWMySQLRepository:
@@ -38,11 +41,14 @@ class DWMySQLRepository:
 
 
     async def validate_sql(self, sql: str):
-        await self.session.execute(text(f"explain {sql}"))
+        bounded_sql = validate_read_only_select(sql)
+        await asyncio.wait_for(self.session.execute(text(f"explain {bounded_sql}")), timeout=10)
+        return bounded_sql
 
     async def execute_sql(self, sql: str) -> list[dict]:
         """
         执行最终生成的 SQL，并返回 list[dict] 格式结果。
         """
-        result = await self.session.execute(text(sql))
+        bounded_sql = validate_read_only_select(sql)
+        result = await asyncio.wait_for(self.session.execute(text(bounded_sql)), timeout=30)
         return [dict(row) for row in result.mappings().fetchall()]

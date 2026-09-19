@@ -16,6 +16,8 @@ def get_llm_client():
         raise RuntimeError("LLM provider is not configured.")
     _llm = ChatDeepSeek(
         model=app_config.llm.model_name,
+        timeout=30,
+        max_retries=1,
         api_key=api_key,
         base_url=app_config.llm.base_url,
         temperature=0,

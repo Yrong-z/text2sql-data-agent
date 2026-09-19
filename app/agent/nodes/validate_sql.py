@@ -30,7 +30,7 @@ async def validate_sql(state: DataAgentState, runtime: Runtime[DataAgentContext]
             raise ValueError("SQL为空，无法验证")
 
         sql = clean_sql(raw_sql)
-        await dw_mysql_repository.validate_sql(sql)
+        sql = await dw_mysql_repository.validate_sql(sql)
 
         writer({"type": "progress", "step": step, "status": "success"})
         logger.info(f"SQL验证成功: {sql}")

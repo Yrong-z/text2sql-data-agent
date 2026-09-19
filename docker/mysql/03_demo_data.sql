@@ -1,4 +1,5 @@
 -- Minimal fictional warehouse rows for public demos.
+SET NAMES utf8mb4;
 USE dw;
 INSERT IGNORE INTO dim_region VALUES
 (1, '浙江省', '华东', '中国'), (2, '四川省', '西南', '中国');

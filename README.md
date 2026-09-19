@@ -1,26 +1,24 @@
-# Wshu
+# T2S 数据问数服务
 
-Wshu is a Text-to-SQL service built around FastAPI, LangGraph, MySQL, Qdrant, Elasticsearch and a local embedding service.
+这是一个基于 FastAPI、LangGraph、MySQL、Qdrant、Elasticsearch 和本地向量化服务的 T2S 数据问数服务。
 
-## Project Overview
+## 项目概览
 
-The public release demonstrates a small fictional warehouse and metadata model.
+公开版本提供一个小型虚构仓库和元数据模型，用于演示自然语言数据查询。
 
-## Architecture
+## 架构
 
-FastAPI → LangGraph Text-to-SQL pipeline → MySQL metadata/data, Qdrant semantic
-recall, Elasticsearch value recall, and TEI embeddings.
+FastAPI → LangGraph T2S 流程 → MySQL 元数据/数据、Qdrant 语义召回、Elasticsearch 值召回和 TEI 向量化。
 
-## Core Flow
+## 核心流程
 
 `extract keywords → recall columns/values/metrics → merge → filter → context → generate SQL → validate/correct → execute`
 
-## Tech Stack
+## 技术栈
 
-Python, FastAPI, LangGraph, MySQL 8, Qdrant, Elasticsearch, Hugging Face TEI,
-and an OpenAI-compatible LLM.
+Python、FastAPI、LangGraph、MySQL 8、Qdrant、Elasticsearch、Hugging Face TEI 和 OpenAI 兼容 LLM。
 
-## Local setup
+## 本地准备
 
 1. Clone the repository and copy `.env.example` to `.env`.
 2. Install the Python dependencies with `uv sync --no-install-project` (the checked-in `uv.lock` pins the environment).
@@ -30,7 +28,7 @@ and an OpenAI-compatible LLM.
    `python scripts/init_demo_retrieval.py`
 7. Run the available tests or call `POST /api/query` after the services are healthy.
 
-## Public demo queries
+## 演示问题
 
 The seed data is fictional and intentionally small. These queries exercise the
 minimum aggregate, dimension filter, and metric/time/region paths:
@@ -41,10 +39,9 @@ minimum aggregate, dimension filter, and metric/time/region paths:
 
 ## API
 
-`POST /api/query` accepts `{ "query": "..." }` and returns an SSE stream with
-progress, generated SQL, and execution result events.
+`POST /api/query` 接收 `{ "query": "..." }`，返回包含进度、生成 SQL 和执行结果事件的 SSE 流。
 
-The query endpoint returns an SSE stream. The normal clean run is:
+查询接口返回 SSE 流。标准运行顺序为：
 
 ```text
 clean clone → docker compose up -d → MySQL schema/seed → init_demo_retrieval.py → POST /api/query
@@ -52,18 +49,15 @@ clean clone → docker compose up -d → MySQL schema/seed → init_demo_retriev
 
 The model weights, `.env`, databases, logs and local virtual environments are intentionally excluded from the repository. The Compose file uses a relative model directory by default and supports `EMBEDDING_MODEL_DIR` for an external local mount.
 
-## Configuration
+## 配置
 
-Copy `.env.example` to `.env`. Set `LLM_MODEL`, `LLM_API_KEY`, and `LLM_BASE_URL`
-for the provider. Database and service endpoints are configurable through the
-same environment file.
+复制 `.env.example` 为 `.env`，并配置 `LLM_MODEL`、`LLM_API_KEY` 和 `LLM_BASE_URL`。数据库和服务地址也通过同一环境文件配置。
 
-## Tests
+## 测试
 
-Run the repository tests after dependencies are installed. Docker clean-run has
-not been verified in this environment.
+安装依赖后运行项目测试。Docker 完整清洁启动需要本机环境配合验证。
 
-## Project Structure
+## 项目结构
 
 ```text
 app/       API, LangGraph agent, repositories, and clients
@@ -73,8 +67,8 @@ scripts/   model and retrieval initialization utilities
 docs/      embedding deployment note
 ```
 
-## Current Limitations
+## 当前限制
 
-- The clean Docker run requires Docker Desktop and external LLM configuration.
-- The demo uses fictional seed data only.
-- SQL generation and correction remain provider-dependent.
+- 完整 Docker 启动需要 Docker Desktop 和外部 LLM 配置。
+- Demo 只使用虚构种子数据。
+- SQL 生成和修正依赖配置的 LLM 服务。

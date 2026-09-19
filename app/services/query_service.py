@@ -1,5 +1,6 @@
 
 import json
+from openai import APIConnectionError, APITimeoutError, AuthenticationError
 
 from app.agent.context import DataAgentContext
 from app.agent.graph import graph
@@ -45,8 +46,16 @@ class QueryService:
                 yield f"data: {json.dumps(chunk, ensure_ascii=False, default=str)}\n\n"
 
         except Exception as e:
+            if isinstance(e, APITimeoutError):
+                message = "模型服务响应超时，请稍后重试"
+            elif isinstance(e, APIConnectionError):
+                message = "无法连接模型服务，请检查后端网络连接后重试"
+            elif isinstance(e, AuthenticationError):
+                message = "模型服务认证失败，请检查 API Key 配置"
+            else:
+                message = str(e) or "查询处理失败"
             error_data = {
                 "type": "error",
-                "message": str(e) or "查询处理失败",
+                "message": message,
             }
             yield f"data: {json.dumps(error_data, ensure_ascii=False, default=str)}\n\n"

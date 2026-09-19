@@ -58,8 +58,11 @@ services:
       - "8081:80"
     environment:
       MODEL_ID: BAAI/bge-large-zh-v1.5
-      MAX_CONCURRENT_REQUESTS: "16"
-      MAX_BATCH_TOKENS: "16384"
+      # Keep CPU warm-up bounded when TEI falls back to pytorch_model.bin.
+      # This keeps the existing model and retrieval behavior while avoiding a
+      # multi-minute startup stall before the service can answer /health.
+      MAX_CONCURRENT_REQUESTS: "8"
+      MAX_BATCH_TOKENS: "4096"
     volumes:
       - embedding-cache:/data
 

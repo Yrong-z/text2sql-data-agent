@@ -1,4 +1,5 @@
 -- Fictional metadata matching the demo warehouse schema.
+SET NAMES utf8mb4;
 USE meta;
 INSERT IGNORE INTO table_info (id, name, role, description) VALUES
 ('fact_order', 'fact_order', 'fact', '虚构订单事实表，记录数量和金额。'),

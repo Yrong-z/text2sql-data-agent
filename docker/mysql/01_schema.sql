@@ -1,9 +1,13 @@
 -- Public demo schema only. All identifiers and rows are fictional.
+SET NAMES utf8mb4;
 CREATE DATABASE IF NOT EXISTS meta CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 CREATE DATABASE IF NOT EXISTS dw CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 -- Compose defaults to MYSQL_USER=app; grant the application user access to
 -- the separately configured metadata database as well as dw.
-GRANT ALL PRIVILEGES ON meta.* TO 'app'@'%';
+REVOKE ALL PRIVILEGES ON dw.* FROM 'app'@'%';
+REVOKE ALL PRIVILEGES ON meta.* FROM 'app'@'%';
+GRANT SELECT ON dw.* TO 'app'@'%';
+GRANT SELECT ON meta.* TO 'app'@'%';
 FLUSH PRIVILEGES;
 
 USE meta;

@@ -1,6 +1,8 @@
 # 日志配置
 from dataclasses import dataclass
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 from omegaconf import OmegaConf
 
@@ -64,6 +66,10 @@ class AppConfig:
     embedding: EmbeddingConfig
     es: ESConfig
     llm: LLMConfig
+
+load_dotenv(Path(__file__).resolve().parents[3] / ".env")
+if os.getenv("PLATFORM_ENV_FILE"):
+    load_dotenv(os.getenv("PLATFORM_ENV_FILE"), override=False)
 
 config_file = Path(__file__).parents[2] / 'conf' / 'app_config.yaml'
 context = OmegaConf.load(config_file)
